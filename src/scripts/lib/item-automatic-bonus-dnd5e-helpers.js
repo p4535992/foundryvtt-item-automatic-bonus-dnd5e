@@ -38,7 +38,9 @@ export class ItemAutomaticBonusDnd5eHelpers {
         }
         title.style.display = "contents";
 
-        const itemBonusProperties = API.getCollection({ item: item });
+        // TODO
+        // const itemBonusProperties = API.getCollection({ item: item });
+        const itemBonusProperties = [];
         if (itemBonusProperties) {
           for (const itemBonusProperty of itemBonusProperties) {
             if (itemBonusProperty.showImageIcon) {
@@ -102,7 +104,7 @@ export class ItemAutomaticBonusDnd5eHelpers {
     }
   }
 
-  async _onMacroControl(event) {
+  static async _onMacroControl(event) {
     event.preventDefault();
     const a = event.currentTarget;
 
@@ -116,15 +118,13 @@ export class ItemAutomaticBonusDnd5eHelpers {
       $(html)
         .find(`input[name^='${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}']`)
         .on("click", ItemAutomaticBonusDnd5eHelpers._onMacroControl.bind(app));
+      // .on("click", ItemAutomaticBonusDnd5eHelpers._onMacroControl(app));
     }
   }
 
-  static _getItemSheetDataItemDurability(data, item) {
+  static _getItemSheetData(data, item, flagNamespace) {
     const config = ItemAutomaticBonusDnd5eHelpers._getSystemCONFIG();
-    const itemDurabilityProps = getProperty(
-      config,
-      `${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}`
-    );
+    const itemProps = getProperty(config, `${CONSTANTS.MODULE_ID}.${flagNamespace}`);
     if (!item) {
       const message = "item not defined in getItemSheetData";
       console.error(message, data);
@@ -132,41 +132,33 @@ export class ItemAutomaticBonusDnd5eHelpers {
       return;
     }
     data = mergeObject(data, {
-      itemDurabilityPropertyLabels: itemDurabilityProps,
+      [`${flagNamespace}Labels`]: itemProps,
+      // TODO ??? NON SEMBRA NECESSARIO
+      // [CONSTANTS.MODULE_ID]: {
+      //   [`${flagNamespace}Labels`]: itemProps,
+      // }
     });
     setProperty(
       data,
-      `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}`,
-      getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}`) ?? {}
+      `flags.${CONSTANTS.MODULE_ID}.${flagNamespace}`,
+      getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${flagNamespace}`) ?? {}
     );
     if (
       item &&
       // && ["spell", "feat", "weapon", "consumable", "equipment", "power", "maneuver"].includes(item.type)
       ["weapon", "equipment"].includes(item.type)
     ) {
-      for (let prop of Object.keys(itemDurabilityProps)) {
+      for (let prop of Object.keys(itemProps)) {
         if (
           getProperty(item, `system.properties.${prop}`) !== undefined &&
-          getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}.${prop}`) ===
-            undefined
+          getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${flagNamespace}.${prop}`) === undefined
         ) {
-          setProperty(
-            data,
-            `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}.${prop}`,
-            item.system.properties[prop]
-          );
-        } else if (
-          getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}.${prop}`) ===
-          undefined
-        ) {
+          setProperty(data, `flags.${CONSTANTS.MODULE_ID}.${flagNamespace}.${prop}`, item.system.properties[prop]);
+        } else if (getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${flagNamespace}.${prop}`) === undefined) {
           if (prop === "saveDamage") {
             // DO NOTHING
           } else {
-            setProperty(
-              data,
-              `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}.${prop}`,
-              false
-            );
+            setProperty(data, `flags.${CONSTANTS.MODULE_ID}.${flagNamespace}.${prop}`, false);
           }
         }
       }
@@ -186,7 +178,10 @@ export class ItemAutomaticBonusDnd5eHelpers {
         // && ["spell", "feat", "weapon", "consumable", "equipment", "power", "maneuver"].includes(data.item.type)
         ["weapon", "equipment"].includes(data.item.type)
       ) {
-        data = mergeObject(data, ItemAutomaticBonusDnd5eHelpers._getItemSheetDataItemDurability(data, item));
+        data = mergeObject(
+          data,
+          ItemAutomaticBonusDnd5eHelpers._getItemSheetData(data, item, CONSTANTS.FLAGS.itemDurabilityProperties)
+        );
         renderTemplate(`modules/${CONSTANTS.MODULE_ID}/templates/itemDurabilityPropertiesForm.hbs`, data).then(
           (templateHtml) => {
             const element = html.find('input[name="system.chatFlavor"]').parent().parent();

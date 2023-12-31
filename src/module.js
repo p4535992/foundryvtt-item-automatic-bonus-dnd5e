@@ -79,7 +79,11 @@ Hooks.once("tidy5e-sheet.ready", (api) => {
       return ["weapon", "equipment"].includes(data.item.type);
     },
     getData: (data) => {
-      data = ItemAutomaticBonusDnd5eHelpers._getItemSheetDataItemDurability(data, data.item);
+      data = ItemAutomaticBonusDnd5eHelpers._getItemSheetData(
+        data,
+        data.item,
+        CONSTANTS.FLAGS.itemDurabilityProperties
+      );
       data.showHeader = false;
       return data;
     },

@@ -6,7 +6,6 @@ const CONSTANTS = {
     // itemSpecialProperties: "itemSpecialProperties",
   },
   API: {},
-  WEAPON_PROPERTIES: DND5E.weaponProperties,
 };
 
 CONSTANTS.PATH = `modules/${CONSTANTS.MODULE_ID}/`;

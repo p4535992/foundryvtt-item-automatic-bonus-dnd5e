@@ -7,7 +7,7 @@
       {{#unless (or (eq key "saveDamage") (eq key "confirmTargets"))}}
       <label class="checkbox">
         <input type="checkbox" name="flags.item-automatic-bonus-dnd5e.itemDurabilityProperties.{{key}}" {{checked value}} />
-        {{lookup ../itemDurabilityPropertyLabels key}}
+        {{lookup ../itemDurabilityPropertiesLabels key}}
       </label>
       {{/unless}}
       {{/each}}

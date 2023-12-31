@@ -1,4 +1,6 @@
+import CONSTANTS from "../constants/constants";
 import { ItemAutomaticBonusDnd5eHelpers } from "./item-automatic-bonus-dnd5e-helpers";
+import { i18n } from "./lib";
 
 export class ItemAutomaticBonusDnd5eMapperHelpers {
   static addConfigItemDurabilityOptions() {
