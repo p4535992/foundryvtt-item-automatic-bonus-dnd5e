@@ -1,0 +1,19 @@
+<form class="item-automatic-bonus-dnd5e color-settings" autocomplete="off">
+    <content>
+        {{> "modules/item-automatic-bonus-dnd5e/templates/partials/colorSettingHeader.hbs"
+            showTemplates=true
+        }}
+        {{#each this.colors}}
+            {{> "modules/item-automatic-bonus-dnd5e/templates/partials/colorSetting.hbs" 
+                key=@key
+                name=(concat "colors." @key)
+                templates=../templates
+                showTemplates=true
+                color=this
+            }}
+        {{/each}}
+    </content>
+    <footer>
+        <button id="save"><i class="fas fa-save"></i>{{localize "item-automatic-bonus-dnd5e.colorSettings.save"}}</button>
+    </footer>
+</form>

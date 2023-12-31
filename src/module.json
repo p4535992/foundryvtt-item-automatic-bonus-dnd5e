@@ -1,0 +1,93 @@
+{
+  "id": "item-automatic-bonus-dnd5e",
+  "title": "Item automatic bonus dnd5e",
+  "description": "Apply BAB bonus in a more automatic way based on the item property setted",
+  "version": "0.0.1",
+  "authors": [
+    {
+      "name": "p4535992",
+      "url": "https://github.com/p4535992",
+      "discord": "",
+      "twitter": "",
+      "patreon": "",
+      "github": "p4535992",
+      "ko-fi": "",
+      "reddit": "",
+      "email": ""
+    }
+  ],
+  "type": "module",
+  "socket": true,
+  "includes": [
+    "./assets/**",
+    "./lang/**",
+    "./languages/**",
+    "./scripts/**",
+    "./styles/**",
+    "./templates/**",
+    "./module.json",
+    "./README.md",
+    "./icons/**",
+    "./packs/**"
+  ],
+  "media": [
+    {
+      "type": "icon",
+      "location": ""
+    },
+    {
+      "type": "cover",
+      "location": ""
+    },
+    {
+      "type": "screenshot",
+      "location": ""
+    }
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "packs": [
+    {
+      "name": "item-automatic-bonus-dnd5e-items",
+      "label": "Item automatic bonusd nd5e",
+      "path": "packs/item-automatic-bonus-dnd5e-items",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "NONE",
+        "TRUSTED": "NONE",
+        "ASSISTANT": "OWNER"
+      },
+      "module": "item-automatic-bonus-dnd5e",
+      "flags": {},
+      "system": "dnd5e"
+    }
+  ],
+  "systems": [],
+  "scripts": [ ],
+  "esmodules": ["module.js"],
+  "styles": ["styles/item-automatic-bonus-dnd5e.css"],
+  "compatibility": {
+    "minimum": 11,
+    "verified": 11,
+    "maximum": 11
+  },
+  "manifestPlusVersion": "1.2.1",
+  "url": "https://github.com/p4535992/foundryvtt-item-automatic-bonus-dnd5e",
+  "manifest": "https://github.com/p4535992/foundryvtt-item-automatic-bonus-dnd5e/releases/download/0.0.1/module.json",
+  "download": "https://github.com/p4535992/foundryvtt-item-automatic-bonus-dnd5e/releases/download/0.0.1/module.zip",
+  "readme": "https://github.com/p4535992/foundryvtt-item-automatic-bonus-dnd5e/blob/master/README.md",
+  "changelog": "https://github.com/p4535992/foundryvtt-item-automatic-bonus-dnd5e/blob/master/CHANGELOG.md",
+  "bugs": "https://github.com/p4535992/foundryvtt-item-automatic-bonus-dnd5e/issues",
+  "allowBugReporter": true,
+  "relationships": {
+    "systems": [],
+    "requires": [],
+    "recommends": [],
+    "conflicts": []
+  }
+}
