@@ -3,6 +3,8 @@ import API from "./scripts/API/api.js";
 import { registerSocket } from "./scripts/socket.js";
 import CONSTANTS from "./scripts/constants/constants.js";
 import { i18n } from "./scripts/lib/lib.js";
+import { ItemAutomaticBonusDnd5eHelpers } from "./scripts/lib/item-automatic-bonus-dnd5e-helpers.js";
+import { ItemAutomaticBonusDnd5eMapperHelpers } from "./scripts/lib/item-automatic-bonus-dnd5-mapper-helpers.js";
 
 /* ------------------------------------ */
 /* Initialize module					*/
@@ -45,6 +47,7 @@ Hooks.once("ready", async () => {
   //   throw error(`Requires the 'socketlib' module. Please ${word} it.`);
   // }
   // await setupSockets();
+  ItemAutomaticBonusDnd5eMapperHelpers.addConfigItemDurabilityOptions();
 });
 
 /* ------------------------------------ */
@@ -55,3 +58,34 @@ Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => {
   registerPackageDebugFlag(CONSTANTS.MODULE_ID);
 });
 
+Hooks.on("renderActorSheet", (app, html, data) => {
+  ItemAutomaticBonusDnd5eHelpers.applyImagesOnInventory(app, html, data);
+});
+
+Hooks.on("renderItemSheet", (app, html, data) => {
+  ItemAutomaticBonusDnd5eHelpers.applyPanelItemDurabilityProperties(app, html, data);
+  ItemAutomaticBonusDnd5eHelpers.applyPanelItemSpecialProperties(app, html, data);
+});
+
+Hooks.once("tidy5e-sheet.ready", (api) => {
+  // ItemAutomaticBonusDnd5eHelpers.applyPanelItemDurabilityPropertiesForTidy(app, html, data);
+  // ItemAutomaticBonusDnd5eHelpers.applyPanelItemSpecialPropertiesForTidy(app, html, data);
+  const myTab = new api.models.HandlebarsTab({
+    title: i18n("item-automatic-bonus-dnd5e.itemDurabilityTab.title"), // TOD i18n
+    tabId: "item-automatic-bonus-dnd5e-item-durability-tab",
+    path: `modules/${CONSTANTS.MODULE_ID}/templates/itemDurabilityPropertiesForm.hbs`,
+    enabled: (data) => {
+      //return ["spell", "feat", "weapon", "consumable", "equipment", "power", "maneuver"].includes(data.item.type)
+      return ["weapon", "equipment"].includes(data.item.type);
+    },
+    getData: (data) => {
+      data = ItemAutomaticBonusDnd5eHelpers._getItemSheetDataItemDurability(data, data.item);
+      data.showHeader = false;
+      return data;
+    },
+    onRender: (params) => {
+      ItemAutomaticBonusDnd5eHelpers._activateMacroListeners(params.app, params.tabContentsElement);
+    },
+  });
+  api.registerItemTab(myTab);
+});

@@ -68,7 +68,7 @@
     }
   ],
   "systems": [],
-  "scripts": [ ],
+  "scripts": [],
   "esmodules": ["module.js"],
   "styles": ["styles/item-automatic-bonus-dnd5e.css"],
   "compatibility": {

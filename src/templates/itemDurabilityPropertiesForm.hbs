@@ -1,0 +1,16 @@
+<div class="item-automatic-bonus-dnd5e-item-durability-tab">
+
+  <section class="sheet-body">
+    <h3 class="form-header">{{localize "item-automatic-bonus-dnd5e.itemDurabilityTab.title"}}</h3>
+    <div class="form-group stacked weapon-properties">
+      {{#each flags.item-automatic-bonus-dnd5e.itemDurabilityProperties as |value key|}}
+      {{#unless (or (eq key "saveDamage") (eq key "confirmTargets"))}}
+      <label class="checkbox">
+        <input type="checkbox" name="flags.item-automatic-bonus-dnd5e.itemDurabilityProperties.{{key}}" {{checked value}} />
+        {{lookup ../itemDurabilityPropertyLabels key}}
+      </label>
+      {{/unless}}
+      {{/each}}
+    </div>
+  </section>
+</div>
