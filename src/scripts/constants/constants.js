@@ -11,6 +11,7 @@ const CONSTANTS = {
     itemHpFormula: "itemHpFormula",
   },
   API: {},
+  DEFAULT_ICON_IMG_DURABILITY: "icons/svg/d6-grey.svg",
 };
 
 CONSTANTS.PATH = `modules/${CONSTANTS.MODULE_ID}/`;

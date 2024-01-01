@@ -1,7 +1,7 @@
 {
   "item-automatic-bonus-dnd5e.itemDurabilityTab.title": "Item Durability",
   "item-automatic-bonus-dnd5e.itemDurabilityTab.HpTitle": "Item HP",
-  "item-automatic-bonus-dnd5e.itemDurabilityTab.HpTitleHint": "If is a weapon is th number ot the attack, if is a armor the number of hit.",
+  "item-automatic-bonus-dnd5e.itemDurabilityTab.HpTitleHint": "If is a weapon is the number of the attack, if is a armor the number of hit taken.",
   "item-automatic-bonus-dnd5e.itemHpValueHint": "Hp value",
   "item-automatic-bonus-dnd5e.itemHpMaxHint": "Hp max value",
   "item-automatic-bonus-dnd5e.itemHpTempHint": "Hp Temp",

@@ -38,7 +38,7 @@ export class ItemAutomaticBonusDnd5eHelpers {
         }
         title.style.display = "contents";
 
-        // TODO
+        /*
         // const itemBonusProperties = API.getCollection({ item: item });
         const itemBonusProperties = [];
         if (itemBonusProperties) {
@@ -64,6 +64,7 @@ export class ItemAutomaticBonusDnd5eHelpers {
             }
           }
         }
+        */
       }
     }
   }
@@ -148,7 +149,7 @@ export class ItemAutomaticBonusDnd5eHelpers {
     event.preventDefault();
     const a = event.currentTarget;
 
-    // TODO
+    // TODO PREPARA CODCIE PER SPOSTARE BONUS ED EFFETTI
   }
 
   static _activateMacroListeners(app, html) {
@@ -159,30 +160,66 @@ export class ItemAutomaticBonusDnd5eHelpers {
         .find(`input[name^='${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}']`)
         .on("click", ItemAutomaticBonusDnd5eHelpers._onMacroControl.bind(app));
       // .on("click", ItemAutomaticBonusDnd5eHelpers._onMacroControl(app));
+      $(html)
+        .find('img[data-edit^="flags.item-automatic-bonus-dnd5e.itemDurabilityProperties"]')
+        .on("click", (ev) => this._onEditImageItemDurability(ev));
     }
+  }
+
+  /**
+   * Handle changing the actor profile image by opening a FilePicker
+   * @param {Event} event
+   * @private
+   */
+  static async _onEditImageItemDurability(event) {
+    const img = event.currentTarget;
+    // const isHeader = img.dataset.edit === "img";
+    const liElement = img.closest(".item-image");
+    const itemElement = img.closest(".item");
+    const itemUuid = itemElement.dataset.itemUuid;
+    const item = await fromUuid(itemUuid);
+    const itemKey = itemElement.dataset.itemKey;
+    let current = liElement.src;
+    const fp = new FilePicker({
+      type: "image",
+      current: current,
+      callback: async (path) => {
+        // img.src = path;
+        // return this._onSubmit(event);
+        let flags = getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}`);
+        setProperty(flags, `${itemKey}.img`, path);
+        await item.setFlag(CONSTANTS.MODULE_ID, CONSTANTS.FLAGS.itemDurabilityProperties, flags);
+      },
+      // top: this.position.top + 40,
+      // left: this.position.left + 10
+    });
+    return fp.browse();
   }
 
   static _getItemSheetData(data, item, flagNamespace) {
     const config = ItemAutomaticBonusDnd5eHelpers._getSystemCONFIG();
-    const itemProps = getProperty(config, `${CONSTANTS.MODULE_ID}.${flagNamespace}`);
+    let itemProps = getProperty(config, `${CONSTANTS.MODULE_ID}.${flagNamespace}`);
     if (!item) {
       const message = "item not defined in getItemSheetData";
       console.error(message, data);
       //TroubleShooter.recordError(new Error(message));
       return;
     }
-    data = mergeObject(data, {
-      [`${flagNamespace}Labels`]: itemProps,
-      // TODO ??? NON SEMBRA NECESSARIO
-      // [CONSTANTS.MODULE_ID]: {
-      //   [`${flagNamespace}Labels`]: itemProps,
-      // }
-    });
-    setProperty(
-      data,
-      `flags.${CONSTANTS.MODULE_ID}.${flagNamespace}`,
-      getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${flagNamespace}`) ?? {}
-    );
+    // data = mergeObject(data, {
+    //   [`${flagNamespace}Labels`]: itemProps,
+    // });
+    // setProperty(
+    //   data,
+    //   `flags.${CONSTANTS.MODULE_ID}.${flagNamespace}Labels`,
+    //   itemProps
+    // );
+
+    const currentFlags = getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${flagNamespace}`) ?? {};
+    delete currentFlags["{{key}}"];
+
+    itemProps = mergeObject(itemProps, currentFlags);
+
+    setProperty(data, `flags.${CONSTANTS.MODULE_ID}.${flagNamespace}`, itemProps);
     if (
       item &&
       // && ["spell", "feat", "weapon", "consumable", "equipment", "power", "maneuver"].includes(item.type)
@@ -231,6 +268,7 @@ export class ItemAutomaticBonusDnd5eHelpers {
 
     data.member = m;
     data.displayHPValues = item.testUserPermission(game.user, "OBSERVER");
+    data.itemUuid = data.item.uuid;
     return data;
   }
 
