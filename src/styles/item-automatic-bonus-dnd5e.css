@@ -32,6 +32,7 @@
   margin-right: 5px;
 }
 
+/* 
 .item-automatic-bonus-dnd5e-item-durability-tab .sheet-body .item .item-name {
   color: #191813;
   margin: 0;
@@ -39,4 +40,12 @@
   font-size: 13px;
   text-align: left;
   align-items: center;
+} 
+*/
+
+.item-automatic-bonus-dnd5e-item-durability-tab .sheet-body .table .tr .td {
+  text-align: center;
+  align-items: center;
+  margin: 0;
+  overflow: hidden;
 }

@@ -11,7 +11,7 @@ export class ItemAutomaticBonusDnd5eMapperHelpers {
     let config = ItemAutomaticBonusDnd5eHelpers._getSystemCONFIG();
     if (game.system.id === "dnd5e" || game.system.id === "n5e") {
       setProperty(config, `${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}`, {});
-      // TODO RECUPERA I DATI DAGLI ITEM
+      // TODO RECUPERA I DATI DAGLI ITEM NEL COMPENDIUM
       setProperty(config, `${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemDurabilityProperties}.${"test"}`, {
         enable: false,
         img: CONSTANTS.DEFAULT_ICON_IMG_DURABILITY,
