@@ -4,6 +4,11 @@ const CONSTANTS = {
   FLAGS: {
     itemDurabilityProperties: "itemDurabilityProperties",
     // itemSpecialProperties: "itemSpecialProperties",
+    itemHpValue: "itemHpValue",
+    itemHpMax: "itemHpMax",
+    itemHpTemp: "itemHpTemp",
+    itemHpTempMax: "itemHpTempMax",
+    itemHpFormula: "itemHpFormula",
   },
   API: {},
 };

@@ -93,3 +93,10 @@ Hooks.once("tidy5e-sheet.ready", (api) => {
   });
   api.registerItemTab(myTab);
 });
+
+// Hooks.on("dnd5e.preRollDamage", (item, rollConfig) => {
+Hooks.on("dnd5e.rollDamage", (item, rollConfig) => {});
+
+Hooks.on("updateItem", async (item, update, options, user) => {
+  ItemAutomaticBonusDnd5eHelpers.onUpdateItem(item, update, options, user);
+});

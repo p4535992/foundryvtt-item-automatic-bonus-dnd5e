@@ -2,6 +2,75 @@
 
   <section class="sheet-body">
     <h3 class="form-header">{{localize "item-automatic-bonus-dnd5e.itemDurabilityTab.title"}}</h3>
+    <div class="form-group stacked">
+      <fieldset>
+          <legend>{{localize "item-automatic-bonus-dnd5e.itemDurabilityTab.HpTitle"}}</legend>
+          <label>
+              {{ localize "item-automatic-bonus-dnd5e.itemDurabilityTab.HpTitleHint"}}
+          </label>
+          <div class="form-group">
+              <label
+                  for="flags.item-automatic-bonus-dnd5e.itemHpValue">
+                  {{ localize "item-automatic-bonus-dnd5e.itemHpValueHint"}}
+              </label>
+              <div class="form-fields">
+                  {{numberInput member.itemHpValue name="flags.item-automatic-bonus-dnd5e.itemHpValue"}}
+              </div>
+          </div>
+          <div class="form-group">
+              <label
+                  for="flags.item-automatic-bonus-dnd5e.itemHpMax">
+                  {{ localize "item-automatic-bonus-dnd5e.itemHpMaxHint"}}
+              </label>
+              <div class="form-fields">
+                  {{numberInput member.itemHpMax name="flags.item-automatic-bonus-dnd5e.itemHpMax"}}
+              </div>
+          </div>
+          <div class="form-group">
+              <label
+                  for="flags.item-automatic-bonus-dnd5e.itemHpTemp">
+                  {{ localize "item-automatic-bonus-dnd5e.itemHpTempHint"}}
+              </label>
+              <div class="form-fields">
+                  {{numberInput member.itemHpTemp name="flags.item-automatic-bonus-dnd5e.itemHpTemp"}}
+              </div>
+          </div>
+          <div class="form-group">
+              <label
+                  for="flags.item-automatic-bonus-dnd5e.itemHpTempMax">
+                  {{ localize "item-automatic-bonus-dnd5e.itemHpTempMaxHint"}}
+              </label>
+              <div class="form-fields">
+                  {{numberInput member.itemHpTempMax name="flags.item-automatic-bonus-dnd5e.itemHpTempMax"}}
+              </div>
+          </div>
+          <div class="form-group">
+              <label
+                  for="flags.item-automatic-bonus-dnd5e.itemHpFormula">
+                  {{ localize "item-automatic-bonus-dnd5e.itemHpFormulaHint"}}
+              </label>
+              <div class="form-fields">
+                <input
+                    type="text"
+                    name="flags.item-automatic-bonus-dnd5e.itemHpFormula"
+                    data-dtype="String"
+                    value="{{member.itemHpFormula}}" >
+                </input>
+              </div>
+          </div>
+      </fieldset>
+      <hr>
+      <div class="hp flexrow">
+          <div class="bar-container">
+              <div class="bar" style="width:{{member.hp.pct}}%; background:{{member.hp.color}}; border-color:{{member.hp.border}}"></div>
+          </div>
+          {{#if displayHPValues}}
+          <span class="current">{{member.hp.current}}</span>
+          <span class="sep">/</span>
+          <span class="max">{{member.hp.max}}</span>
+          {{/if}}
+      </div>
+    </div>
     <div class="form-group stacked weapon-properties">
       {{#each flags.item-automatic-bonus-dnd5e.itemDurabilityProperties as |value key|}}
       {{#unless (or (eq key "saveDamage") (eq key "confirmTargets"))}}

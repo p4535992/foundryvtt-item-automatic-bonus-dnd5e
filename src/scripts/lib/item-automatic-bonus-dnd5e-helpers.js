@@ -86,6 +86,46 @@ export class ItemAutomaticBonusDnd5eHelpers {
     );
   }
 
+  // ===============================================================================================================
+
+  /**
+   * Get a color used to represent the current hit points of an Actor.
+   * @param {number} current        The current HP value
+   * @param {number} max            The maximum HP value
+   * @returns {Color}               The color used to represent the HP percentage
+   */
+  static _getHPColor(current, max) {
+    const pct = Math.clamped(current, 0, max) / max;
+    return Color.fromRGB([1 - pct / 2, pct, 0]);
+  }
+
+  static onUpdateItem(item, update, options, user) {
+    const hp = {
+      value: getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpValue}`),
+      max: getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpMax}`),
+      temp: getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpTemp}`),
+      tempmax: getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpTempMax}`),
+      formula: getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpFormula}`),
+    };
+
+    // const hpUpdate = {
+    //   value: getProperty(update, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpValue}`),
+    //   max: getProperty(update, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpMax}`),
+    //   temp: getProperty(update, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpTemp}`),
+    //   tempmax: getProperty(update, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpTempMax}`),
+    //   formula: getProperty(update, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpFormula}`),
+    // };
+
+    const hpUpdateKeys = Object.keys(getProperty(update, `flags.${CONSTANTS.MODULE_ID}`) || {}) || [];
+    const isHpUpdate =
+      hpUpdateKeys.includes(`${CONSTANTS.FLAGS.itemHpValue}`) ||
+      hpUpdateKeys.includes(`${CONSTANTS.FLAGS.itemHpMax}`) ||
+      hpUpdateKeys.includes(`${CONSTANTS.FLAGS.itemHpTemp}`) ||
+      hpUpdateKeys.includes(`${CONSTANTS.FLAGS.itemHpTempMax}`) ||
+      hpUpdateKeys.includes(`${CONSTANTS.FLAGS.itemHpFormula}`);
+    if (isHpUpdate) {
+    }
+  }
   // =====================================================================================================
 
   static _getSystemCONFIG() {
@@ -164,6 +204,33 @@ export class ItemAutomaticBonusDnd5eHelpers {
       }
     }
     data.showHeader = true;
+
+    // HP bar
+    const m = {};
+    m.hp = {};
+    const hp = {
+      value: getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpValue}`) || 0,
+      max: getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpMax}`) || 0,
+      temp: getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpTemp}`) || 0,
+      tempmax: getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpTempMax}`) || 0,
+      formula: getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpFormula}`) || "",
+    };
+    // member.system.attributes.hp;
+    m.hp.current = hp.value + (hp.temp || 0);
+    m.hp.max = Math.max(0, hp.max + (hp.tempmax || 0));
+    m.hp.pct = Math.clamped((m.hp.current / m.hp.max) * 100, 0, 100).toFixed(2);
+    m.hp.color = ItemAutomaticBonusDnd5eHelpers._getHPColor(m.hp.current, m.hp.max).css;
+    m.currentHP += m.hp.current; // stats.
+    m.maxHP += m.hp.max; // stats.
+
+    (m.itemHpValue = getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpValue}`) || 0),
+      (m.itemHpMax = getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpMax}`) || 0),
+      (m.itemHpTemp = getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpTemp}`) || 0),
+      (m.itemHpTempMax = getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpTempMax}`) || 0),
+      (m.itemHpFormula = getProperty(item, `flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.FLAGS.itemHpFormula}`) || "");
+
+    data.member = m;
+    data.displayHPValues = item.testUserPermission(game.user, "OBSERVER");
     return data;
   }
 

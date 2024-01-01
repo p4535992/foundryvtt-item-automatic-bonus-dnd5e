@@ -1,0 +1,24 @@
+.item-automatic-bonus-dnd5e-item-durability-tab .sheet-body .hp {
+  flex: 2;
+  align-items: center;
+}
+.item-automatic-bonus-dnd5e-item-durability-tab .sheet-body .hp .current,
+.item-automatic-bonus-dnd5e-item-durability-tab .sheet-body .hp .max {
+  flex: 0 0 40px;
+  text-align: center;
+}
+.item-automatic-bonus-dnd5e-item-durability-tab .sheet-body .hp .bar-container {
+  background: #111;
+  height: 20px;
+  padding: 1px;
+  border: 1px solid #000;
+  border-radius: 6px;
+}
+.item-automatic-bonus-dnd5e-item-durability-tab .sheet-body .hp .bar {
+  height: 16px;
+  border-radius: 4px;
+}
+.item-automatic-bonus-dnd5e-item-durability-tab .sheet-body .controls {
+  flex: 0 0 64px;
+  text-align: right;
+}
